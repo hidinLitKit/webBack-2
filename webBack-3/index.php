@@ -52,7 +52,7 @@ if (empty($_POST['field-multiple-language'])) {
 }
 
 // Проверка биографии
-if (empty($_POST['field-biography']) || strlen($_POST['field-biography']) <= 150) {
+if (empty($_POST['field-biography']) || strlen($_POST['field-biography']) > 150) {
   print('Расскажите о себе.<br/>');
   $errors = TRUE;
 }
