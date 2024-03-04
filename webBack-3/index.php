@@ -20,16 +20,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 // Проверяем ошибки.
 $errors = FALSE;
-if (empty($_POST['fio'])) {
+
+// Проверка ФИО
+if (!preg_match("/^[a-zA-Zа-яА-Я\s]+$/u", $_POST['fio'])) {
   print('Заполните имя.<br/>');
   $errors = TRUE;
 }
 
-if (empty($_POST['year']) || !is_numeric($_POST['year']) || !preg_match('/^\d+$/', $_POST['year'])) {
+// Проверка года
+if (empty($_POST['year']) || !is_numeric($_POST['year']) || !preg_match('/^\d+$/', $_POST['year'])){
   print('Заполните год.<br/>');
   $errors = TRUE;
 }
 
+// Проверка email
+if (empty($_POST['field-email']) || !filter_var($_POST['field-email'], FILTER_VALIDATE_EMAIL)){
+  print('Введите корректный email.<br/>');
+  $errors = TRUE;
+}
+
+// Проверка пола
+if (empty($_POST['gender']) || ($_POST['gender'] != 'male' && $_POST['gender'] != 'female')) {
+  print('Выберите пол.<br/>');
+  $errors = TRUE;
+}
+
+// Проверка выбора языка программирования
+if (empty($_POST['field-multiple-language'])) {
+  print('Выберите язык программирования.<br/>');
+  $errors = TRUE;
+}
+
+// Проверка биографии
+if (empty($_POST['field-biography']) || strlen($_POST['field-biography']) <= 150) {
+  print('Расскажите о себе.<br/>');
+  $errors = TRUE;
+}
+
+// Проверка согласия с контрактом
+if (empty($_POST['check-contract'])) {
+  print('Вы должны согласиться с контрактом.<br/>');
+  $errors = TRUE;
+}
 
 // *************
 // Тут необходимо проверить правильность заполнения всех остальных полей.
@@ -39,18 +71,31 @@ if ($errors) {
   // При наличии ошибок завершаем работу скрипта.
   exit();
 }
-
+print('Валидация прошла успешно!');
 // Сохранение в базу данных.
 
-$user = 'db'; // Заменить на ваш логин uXXXXX
-$pass = '123'; // Заменить на пароль, такой же, как от SSH
-$db = new PDO('mysql:host=localhost;dbname=test', $user, $pass,
+$user = 'u67322'; // Заменить на ваш логин uXXXXX
+$pass = '9577670'; // Заменить на пароль, такой же, как от SSH
+$db = new PDO('mysql:host=localhost;dbname=u67322', $user, $pass,
   [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); // Заменить test на имя БД, совпадает с логином uXXXXX
 
 // Подготовленный запрос. Не именованные метки.
 try {
-  $stmt = $db->prepare("INSERT INTO application SET name = ?");
-  $stmt->execute([$_POST['fio']]);
+  $stmt = $db->prepare("INSERT INTO your_table_name (fio, year, email, gender, biography, contract) VALUES (?, ?, ?, ?, ?, ?)");
+  $stmt->execute([$_POST['fio'], $_POST['year'], $_POST['field-email'], $_POST['gender'], $_POST['field-biography'], $_POST['check-contract']]);
+
+      // Получение ID последней вставленной записи
+      $lastInsertId = $db->lastInsertId();
+
+      // Сохранение выбранных языков программирования в отдельной таблице
+      if (!empty($_POST['field-multiple-language'])) {
+        $languages = $_POST['field-multiple-language'];
+        foreach ($languages as $language) {
+          $stmt = $db->prepare("INSERT INTO programming_languages (user_id, language) VALUES (?, ?)");
+          $stmt->execute([$lastInsertId, $language]);
+        }
+      }
+    print('Данные успешно сохранены!');
 }
 catch(PDOException $e){
   print('Error : ' . $e->getMessage());
