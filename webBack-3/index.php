@@ -86,7 +86,8 @@ $db = new PDO('mysql:host=localhost;dbname=u67322', $user, $pass,
 // Подготовленный запрос. Не именованные метки.
 try {
   $stmt = $db->prepare("INSERT INTO application (fio, year, email, gender, biography, checkcontract) VALUES (?, ?, ?, ?, ?, ?)");
-  $stmt->execute([$_POST['fio'], $_POST['year'], $_POST['email'], $_POST['gender'], $_POST['biography'], $_POST['checkcontract']]);
+  $checkContractValue = $_POST['checkcontract'] === 'on' ? 1 : 0;
+  $stmt->execute([$_POST['fio'], $_POST['year'], $_POST['email'], $_POST['gender'], $_POST['biography'], $checkContractValue]);
 
       // Получение ID последней вставленной записи
       $lastInsertId = $db->lastInsertId();
