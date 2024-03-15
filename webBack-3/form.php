@@ -43,7 +43,7 @@
     <textarea name="biography">Меня зовут Кира Йошикаге...</textarea>
   </label><br />
   <label>
-    <input type="checkbox" name="check-contract" /> С контрактом ознакомлен(а)
+    <input type="checkbox" name="checkcontract" /> С контрактом ознакомлен(а)
   </label><br />
   <input type="submit" value="ok" />
 </form>

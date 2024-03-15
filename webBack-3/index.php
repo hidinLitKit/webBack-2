@@ -62,7 +62,7 @@ if (empty($_POST['biography']) || strlen($_POST['biography']) > 150) {
 }
 
 // Проверка согласия с контрактом
-if (empty($_POST['check-contract'])) {
+if (empty($_POST['checkcontract'])) {
   print('Вы должны согласиться с контрактом.<br/>');
   $errors = TRUE;
 }
@@ -85,8 +85,8 @@ $db = new PDO('mysql:host=localhost;dbname=u67322', $user, $pass,
 
 // Подготовленный запрос. Не именованные метки.
 try {
-  $stmt = $db->prepare("INSERT INTO application (fio, year, email, gender, biography, check-contract) VALUES (?, ?, ?, ?, ?, ?)");
-  $stmt->execute([$_POST['fio'], $_POST['year'], $_POST['email'], $_POST['gender'], $_POST['biography'], $_POST['check-contract']]);
+  $stmt = $db->prepare("INSERT INTO application (fio, year, email, gender, biography, checkcontract) VALUES (?, ?, ?, ?, ?, ?)");
+  $stmt->execute([$_POST['fio'], $_POST['year'], $_POST['email'], $_POST['gender'], $_POST['biography'], $_POST['checkcontract']]);
 
       // Получение ID последней вставленной записи
       $lastInsertId = $db->lastInsertId();
