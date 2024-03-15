@@ -34,7 +34,7 @@ if (empty($_POST['year']) || !is_numeric($_POST['year']) || !preg_match('/^\d+$/
 }
 
 // Проверка email
-if (empty($_POST['field-email']) || !filter_var($_POST['field-email'], FILTER_VALIDATE_EMAIL)){
+if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
   print('Введите корректный email.<br/>');
   $errors = TRUE;
 }
@@ -50,9 +50,13 @@ if (empty($_POST['field-multiple-language'])) {
   print('Выберите язык программирования.<br/>');
   $errors = TRUE;
 }
+else
+{
+
+}
 
 // Проверка биографии
-if (empty($_POST['field-biography']) || strlen($_POST['field-biography']) > 150) {
+if (empty($_POST['biography']) || strlen($_POST['biography']) > 150) {
   print('Расскажите о себе.<br/>');
   $errors = TRUE;
 }
@@ -81,20 +85,39 @@ $db = new PDO('mysql:host=localhost;dbname=u67322', $user, $pass,
 
 // Подготовленный запрос. Не именованные метки.
 try {
-  $stmt = $db->prepare("INSERT INTO your_table_name (fio, year, email, gender, biography, contract) VALUES (?, ?, ?, ?, ?, ?)");
-  $stmt->execute([$_POST['fio'], $_POST['year'], $_POST['field-email'], $_POST['gender'], $_POST['field-biography'], $_POST['check-contract']]);
+  $stmt = $db->prepare("INSERT INTO application (fio, year, email, gender, biography, check-contract) VALUES (?, ?, ?, ?, ?, ?)");
+  $stmt->execute([$_POST['fio'], $_POST['year'], $_POST['email'], $_POST['gender'], $_POST['biography'], $_POST['check-contract']]);
 
       // Получение ID последней вставленной записи
       $lastInsertId = $db->lastInsertId();
 
       // Сохранение выбранных языков программирования в отдельной таблице
-      if (!empty($_POST['field-multiple-language'])) {
+      /* if (!empty($_POST['field-multiple-language'])) {
         $languages = $_POST['field-multiple-language'];
         foreach ($languages as $language) {
           $stmt = $db->prepare("INSERT INTO programming_languages (user_id, language) VALUES (?, ?)");
           $stmt->execute([$lastInsertId, $language]);
         }
-      }
+      } */
+      if (!empty($_POST['field-multiple-language'])) {
+        $languages = $_POST['field-multiple-language'];
+        foreach ($languages as $language) {
+            $stmt = $db->prepare("SELECT id FROM programming_language WHERE name = ?");
+            $stmt->execute([$language]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            if (!$row) {
+                $stmt = $db->prepare("INSERT INTO programming_language (name) VALUES (?)");
+                $stmt->execute([$language]);
+                $languageId = $db->lastInsertId();
+            } else {
+                $languageId = $row['id'];
+            }
+    
+            $stmt = $db->prepare("INSERT INTO application_language (application_id, language_id) VALUES (?, ?)");
+            $stmt->execute([$lastInsertId, $languageId]);
+        }
+    }
     print('Данные успешно сохранены!');
 }
 catch(PDOException $e){

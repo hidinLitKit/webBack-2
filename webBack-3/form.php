@@ -6,7 +6,7 @@
   </label><br />
   <label>
     Ваш email:<br />
-    <input name="field-email" type="email" placeholder="Введите вашу почту" />
+    <input name="email" type="email" placeholder="Введите вашу почту" />
   </label><br />
   <label>
     Дата рождения:<br />
@@ -25,7 +25,7 @@
   </label><br />
   <label>
     Выберите любимый язык программирования:<br />
-    <select name="field-multiple-language" multiple="multiple">
+    <select name="field-multiple-language[]" multiple="multiple">
       <option value="C">C</option>
       <option value="C++">C++</option>
       <option value="JavaScript">JavaScript</option>
@@ -40,7 +40,7 @@
   </label><br />
   <label>
     Расскажите о себе!<br />
-    <textarea name="field-biography">Меня зовут Кира Йошикаге...</textarea>
+    <textarea name="biography">Меня зовут Кира Йошикаге...</textarea>
   </label><br />
   <label>
     <input type="checkbox" name="check-contract" /> С контрактом ознакомлен(а)
