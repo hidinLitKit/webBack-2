@@ -79,7 +79,7 @@ if ($errors) {
 print('Валидация прошла успешно!');
 // Сохранение в базу данных.
 
-include('./credentials.php');
+include('../credentials.php');
 $db = new PDO('mysql:host=localhost;dbname=u67322', $db_user, $db_pass,
   [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); // Заменить test на имя БД, совпадает с логином uXXXXX
 
