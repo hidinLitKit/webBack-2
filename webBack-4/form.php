@@ -42,8 +42,9 @@
   </label><br />
   <label>
     Расскажите о себе!<br />
-    <textarea name="biography" <?php if ($errors['biography']) {print 'class="error"';} ?> <?php print $values['biography']; ?>> </textarea>
+    <textarea name="biography" <?php if ($errors['biography']) {print 'class="error"';} ?>><?php print htmlspecialchars($values['biography']); ?></textarea>
   </label><br />
+
   <label>
     <input type="checkbox" name="checkcontract" <?php if ($errors['checkcontract']) {print 'class="error"';} ?> <?php if($values['checkcontract'] == 1) print "checked" ?> /> С контрактом ознакомлен(а)
   </label><br />
