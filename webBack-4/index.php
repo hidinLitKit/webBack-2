@@ -115,7 +115,7 @@ else
     setcookie('fio_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
-  setcookie('fio_value', $fioValue, time() + 30 * 24 * 60 * 60);
+  setcookie('fio_value', $fioval, time() + 30 * 24 * 60 * 60);
   // Проверка года
   if (empty($yearval) || !is_numeric($yearval) || !preg_match('/^\d+$/', $yearval)){
     setcookie('year_error', '1', time() + 24 * 60 * 60);
@@ -133,7 +133,7 @@ else
     setcookie('gender_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
-  setcookie('gender_value', $gender, time() + 30 * 24 * 60 * 60);
+  setcookie('gender_value', $genderval, time() + 30 * 24 * 60 * 60);
   // Проверка выбора языка программирования
   if (empty($langsval)) {
     setcookie('langs_error', '1', time() + 24 * 60 * 60);
@@ -148,13 +148,13 @@ else
     setcookie('biography_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
-  setcookie('biography_value', $bio, time() + 30 * 24 * 60 * 60);
+  setcookie('biography_value', $bioval, time() + 30 * 24 * 60 * 60);
   // Проверка согласия с контрактом
   if (empty($checkval)) {
     setcookie('checkcontract_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
-  setcookie('checkcontract_value', $check, time() + 30 * 24 * 60 * 60);
+  setcookie('checkcontract_value', $checkval, time() + 30 * 24 * 60 * 60);
 
 
   if ($errors) {
