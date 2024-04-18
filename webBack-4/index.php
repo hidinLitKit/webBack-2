@@ -102,60 +102,75 @@ else
   $bioval = $_POST['biography'];
   $langsval = !empty($_POST['field-multiple-language'])?$_POST['field-multiple-language']:null;
   
-  
+  $langsCV = '';
+  if($langsval != null && !empty($langsval))
+  {
+    for($i = 0; $i < count($langsval); $i++)
+    {
+      $langsCV .= $langsval[$i] . ",";
+    }
+  }
   // Проверка ФИО
-  if (!preg_match("/^[a-zA-Zа-яА-Я\s]+$/u", $_POST['fio'])) {
-    print('Заполните имя.<br/>');
+  if (!preg_match("/^[a-zA-Zа-яА-Я\s]+$/u", $fioval) || empty($fioval)) {
+    setcookie('fio_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
-
+  setcookie('fio_value', $fioValue, time() + 30 * 24 * 60 * 60);
   // Проверка года
-  if (empty($_POST['year']) || !is_numeric($_POST['year']) || !preg_match('/^\d+$/', $_POST['year'])){
-    print('Заполните год.<br/>');
+  if (empty($yearval) || !is_numeric($yearval) || !preg_match('/^\d+$/', $yearval)){
+    setcookie('year_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
-
+  setcookie('year_value', $yearval, time() + 30 * 24 * 60 * 60);
   // Проверка email
-  if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
-    print('Введите корректный email.<br/>');
+  if (empty($emailval) || !filter_var($emailval, FILTER_VALIDATE_EMAIL)){
+    setcookie('email_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
-
+  setcookie('email_value', $emailval, time() + 30 * 24 * 60 * 60);
   // Проверка пола
-  if (empty($_POST['gender']) || ($_POST['gender'] != 'male' && $_POST['gender'] != 'female')) {
-    print('Выберите пол.<br/>');
+  if (empty($genderval) || ($genderval != 'male' && $genderval != 'female')) {
+    setcookie('gender_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
-
+  setcookie('gender_value', $gender, time() + 30 * 24 * 60 * 60);
   // Проверка выбора языка программирования
-  if (empty($_POST['field-multiple-language'])) {
-    print('Выберите язык программирования.<br/>');
+  if (empty($langsval)) {
+    setcookie('langs_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
   else
   {
-
+    setcookie('langs_value', $langsCV, time() + 30 * 24 * 60 * 60);
   }
-
   // Проверка биографии
-  if (empty($_POST['biography']) || strlen($_POST['biography']) > 150) {
-    print('Расскажите о себе.<br/>');
+  if (empty($bioval) || strlen($bioval) > 150) {
+    setcookie('biography_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
-
+  setcookie('biography_value', $bio, time() + 30 * 24 * 60 * 60);
   // Проверка согласия с контрактом
-  if (empty($_POST['checkcontract'])) {
-    print('Вы должны согласиться с контрактом.<br/>');
+  if (empty($checkval)) {
+    setcookie('checkcontract_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
+  setcookie('checkcontract_value', $check, time() + 30 * 24 * 60 * 60);
 
-  // *************
-  // Тут необходимо проверить правильность заполнения всех остальных полей.
-  // *************
 
   if ($errors) {
-    // При наличии ошибок завершаем работу скрипта.
+        // При наличии ошибок перезагружаем страницу и завершаем работу скрипта.
+    header('Location: index.php');
     exit();
+  }
+  else
+  {
+    setcookie('fio_error', '', 100000);
+    setcookie('email_error', '', 100000);
+    setcookie('year_error', '', 100000);
+    setcookie('langs_error', '', 100000);
+    setcookie('gender_error', '', 100000);
+    setcookie('biography_error', '', 100000);
+    setcookie('checkcontract_error', '', 100000);
   }
   print('Валидация прошла успешно!');
   // Сохранение в базу данных.
@@ -163,7 +178,7 @@ else
   include('../credentials.php');
   $db = new PDO('mysql:host=localhost;dbname=u67322', $db_user, $db_pass,
     [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); // Заменить test на имя БД, совпадает с логином uXXXXX
-}
+
 // Подготовленный запрос. Не именованные метки.
 try {
   $stmt = $db->prepare("INSERT INTO application (fio, year, email, gender, biography, checkcontract) VALUES (?, ?, ?, ?, ?, ?)");
@@ -206,25 +221,9 @@ catch(PDOException $e){
   print('Error : ' . $e->getMessage());
   exit();
 }
-
-//  stmt - это "дескриптор состояния".
- 
-//  Именованные метки.
-//$stmt = $db->prepare("INSERT INTO test (label,color) VALUES (:label,:color)");
-//$stmt -> execute(['label'=>'perfect', 'color'=>'green']);
- 
-//Еще вариант
-/*$stmt = $db->prepare("INSERT INTO users (firstname, lastname, email) VALUES (:firstname, :lastname, :email)");
-$stmt->bindParam(':firstname', $firstname);
-$stmt->bindParam(':lastname', $lastname);
-$stmt->bindParam(':email', $email);
-$firstname = "John";
-$lastname = "Smith";
-$email = "john@test.com";
-$stmt->execute();
-*/
+// Сохраняем куку с признаком успешного сохранения.
+setcookie('save', '1');
 
 // Делаем перенаправление.
-// Если запись не сохраняется, но ошибок не видно, то можно закомментировать эту строку чтобы увидеть ошибку.
-// Если ошибок при этом не видно, то необходимо настроить параметр display_errors для PHP.
-header('Location: ?save=1');
+header('Location: index.php');
+}
