@@ -11,12 +11,13 @@
   <label>
     Дата рождения:<br />
     <select name="year">
-      <?php 
+      <?php
       for ($i = 1922; $i <= 2022; $i++) {
-        printf('<option value="%d">%d год</option>', $i, $i);
+        $selected = ($i == $values['year']) ? 'selected' : '';
+        printf('<option value="%d" %s>%d год</option>', $i, $selected, $i);
       }
       ?>
-      <?php if ($errors['year']) {print 'class="error"';} ?> value="<?php print date('Y', strtotime($values['year'])); ?>"
+      <?php if ($errors['year']) {print 'class="error"';} ?>
     </select>
   </label><br />
   <label>
@@ -41,7 +42,7 @@
   </label><br />
   <label>
     Расскажите о себе!<br />
-    <textarea name="biography" <?php if ($errors['biography']) {print 'class="error"';} ?> <?php print $values['biography']; ?>>Меня зовут Кира Йошикаге...</textarea>
+    <textarea name="biography" <?php if ($errors['biography']) {print 'class="error"';} ?> <?php print $values['biography']; ?>> </textarea>
   </label><br />
   <label>
     <input type="checkbox" name="checkcontract" <?php if ($errors['checkcontract']) {print 'class="error"';} ?> <?php if($values['checkcontract'] == 1) print "checked" ?> /> С контрактом ознакомлен(а)
