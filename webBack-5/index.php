@@ -307,49 +307,50 @@ if (!empty($_COOKIE[session_name()]) &&
     // Сохраняем в Cookies.
     setcookie('login', $login);
     setcookie('pass', $pass);
-try {
-  $stmt = $db->prepare("INSERT INTO application (fio, year, email, gender, biography, checkcontract) VALUES (?, ?, ?, ?, ?, ?)");
-  $checkContractValue = $_POST['checkcontract'] === 'on' ? 1 : 0;
-  $stmt->execute([$_POST['fio'], $_POST['year'], $_POST['email'], $_POST['gender'], $_POST['biography'], $checkContractValue]);
+  try {
+    $stmt = $db->prepare("INSERT INTO application (fio, year, email, gender, biography, checkcontract) VALUES (?, ?, ?, ?, ?, ?)");
+    $checkContractValue = $_POST['checkcontract'] === 'on' ? 1 : 0;
+    $stmt->execute([$_POST['fio'], $_POST['year'], $_POST['email'], $_POST['gender'], $_POST['biography'], $checkContractValue]);
 
-      // Получение ID последней вставленной записи
-      $lastInsertId = $db->lastInsertId();
-      $FormId = $db->lastInsertId();
+        // Получение ID последней вставленной записи
+        $lastInsertId = $db->lastInsertId();
+        $FormId = $db->lastInsertId();
 
-      // Сохранение выбранных языков программирования в отдельной таблице
-      /* if (!empty($_POST['field-multiple-language'])) {
-        $languages = $_POST['field-multiple-language'];
-        foreach ($languages as $language) {
-          $stmt = $db->prepare("INSERT INTO programming_languages (user_id, language) VALUES (?, ?)");
-          $stmt->execute([$lastInsertId, $language]);
-        }
-      } */
-      if (!empty($_POST['field-multiple-language'])) {
-        $languages = $_POST['field-multiple-language'];
-        foreach ($languages as $language) {
-            $stmt = $db->prepare("SELECT id FROM programming_language WHERE name = ?");
-            $stmt->execute([$language]);
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-            if (!$row) {
-                $stmt = $db->prepare("INSERT INTO programming_language (name) VALUES (?)");
-                $stmt->execute([$language]);
-                $languageId = $db->lastInsertId();
-            } else {
-                $languageId = $row['id'];
-            }
-    
-            $stmt = $db->prepare("INSERT INTO application_language (application_id, language_id) VALUES (?, ?)");
-            $stmt->execute([$lastInsertId, $languageId]);
-        }
-    }
-    $stmt = $db->prepare("INSERT INTO Users (FormId, Login, Password) VALUES (:formId, :login, :pass)");
-      $stmt -> execute(['formId'=>$FormId, 'login'=>$login,'pass'=>$shapass]);
-    print('Данные успешно сохранены!');
-}
-catch(PDOException $e){
-  print('Error : ' . $e->getMessage());
-  exit();
+        // Сохранение выбранных языков программирования в отдельной таблице
+        /* if (!empty($_POST['field-multiple-language'])) {
+          $languages = $_POST['field-multiple-language'];
+          foreach ($languages as $language) {
+            $stmt = $db->prepare("INSERT INTO programming_languages (user_id, language) VALUES (?, ?)");
+            $stmt->execute([$lastInsertId, $language]);
+          }
+        } */
+        if (!empty($_POST['field-multiple-language'])) {
+          $languages = $_POST['field-multiple-language'];
+          foreach ($languages as $language) {
+              $stmt = $db->prepare("SELECT id FROM programming_language WHERE name = ?");
+              $stmt->execute([$language]);
+              $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      
+              if (!$row) {
+                  $stmt = $db->prepare("INSERT INTO programming_language (name) VALUES (?)");
+                  $stmt->execute([$language]);
+                  $languageId = $db->lastInsertId();
+              } else {
+                  $languageId = $row['id'];
+              }
+      
+              $stmt = $db->prepare("INSERT INTO application_language (application_id, language_id) VALUES (?, ?)");
+              $stmt->execute([$lastInsertId, $languageId]);
+          }
+      }
+      $stmt = $db->prepare("INSERT INTO Users (FormId, Login, Password) VALUES (:formId, :login, :pass)");
+        $stmt -> execute(['formId'=>$FormId, 'login'=>$login,'pass'=>$shapass]);
+      print('Данные успешно сохранены!');
+  }
+  catch(PDOException $e){
+    print('Error : ' . $e->getMessage());
+    exit();
+  }
 }
 // Сохраняем куку с признаком успешного сохранения.
 setcookie('save', '1');
