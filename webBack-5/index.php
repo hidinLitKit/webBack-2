@@ -127,19 +127,19 @@ try {
     $sth = $db->prepare('SELECT language_id FROM application_language WHERE application_id = :id');
     $sth->execute(['id' => $formId]);
     $j = 0;
-    $langs = [];
+    $langsval = [];
     $row = $sth->fetchAll();
     for($i = 0; $i < count($row); $i++) {
       $sth = $db->prepare('SELECT name FROM programming_language WHERE id = :id');
       $sth->execute(['id' => ($row[$i])['language_id']]);
       while ($langrow = $sth->fetch()) {
-        $langs[$j++] = $langrow['name'];
+        $langsval[$j++] = $langrow['name'];
       }
     }
     $langsCV = '';
-    for($i = 0; $i < count($langs); $i++)
+    for($i = 0; $i < count($langsval); $i++)
     {
-      $langsCV .= $langs[$i] . ",";
+      $langsCV .= $langsval[$i] . ",";
     }
     $values['field-multiple-language'] = $langsCV;
     
@@ -277,18 +277,18 @@ if (!empty($_COOKIE[session_name()]) &&
     $stmt = $db->prepare("DELETE FROM application_language WHERE application_id = :formId");
     $stmt -> execute(['formId'=>$formId]);
     $langId;
-    for($i = 0; $i < count($langs); $i++)
+    for($i = 0; $i < count($langsval); $i++)
     {
         $langId = null;
         $sth = $db->prepare('SELECT id FROM programming_language WHERE name = :langName');
-        $sth->execute(['langName' => $langs[$i]]);
+        $sth->execute(['langName' => $langsval[$i]]);
         while ($row = $sth->fetch()) {
           $langId = $row['Id'];
         }
         if($langId == null)
         {
           $stmt = $db->prepare("INSERT INTO programming_language (name) VALUES (:languageNameDB)");
-          $stmt -> execute(['languageNameDB'=>$langs[$i]]);
+          $stmt -> execute(['languageNameDB'=>$langsval[$i]]);
 
           $langId = $db->lastInsertId();
         }
