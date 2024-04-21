@@ -48,6 +48,7 @@
   <label>
     <input type="checkbox" name="checkcontract" <?php if ($errors['checkcontract']) {print 'class="error"';} ?> <?php if($values['checkcontract'] == 1) print "checked" ?> /> С контрактом ознакомлен(а)
   </label><br />
+  <input type="hidden" name="csrf_form_token" value="<?=$val?>">
   <input type="submit" value="ok" />
 </form>
 <?php 
