@@ -271,7 +271,7 @@ if (!empty($_COOKIE[session_name()]) &&
     $userLogin = $_SESSION['login'];
     $formId = GetLoginID($db, $userLogin);
 
-    $stmt = $db->prepare("UPDATE application SET fio = :fio, , email = :email, year = :year, gender = :gender, biography = :biography, checkcontract = :checkcontract WHERE id = :id");
+    $stmt = $db->prepare("UPDATE application SET fio = :fio, year = :year, email = :email,  gender = :gender, biography = :biography, checkcontract = :checkcontract WHERE id = :id");
     $stmt -> execute(['fio'=>$fioval, 'email'=>$emailval,'year'=>$yearval,'gender'=>$genderval,'biography'=>$bioval, 'checkcontract'=>$checkval, 'id' => $formId]);
 
     $stmt = $db->prepare("DELETE FROM application_language WHERE application_id = :formId");
