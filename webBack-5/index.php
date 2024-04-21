@@ -150,13 +150,12 @@ catch(PDOException $e){
 }
 
 setcookie('fio_value', $values['fio'], time() + 30 * 24 * 60 * 60);
-setcookie('tel_value', $values['field-tel'], time() + 30 * 24 * 60 * 60);
-setcookie('email_value', $values['field-email'], time() + 30 * 24 * 60 * 60);
-setcookie('bio_value', $values['bio'], time() + 30 * 24 * 60 * 60);
-setcookie('check_value', $values['check-1'], time() + 30 * 24 * 60 * 60);
+setcookie('email_value', $values['email'], time() + 30 * 24 * 60 * 60);
+setcookie('year_value', $values['year'], time() + 30 * 24 * 60 * 60);
 setcookie('gender_value', $values['gender'], time() + 30 * 24 * 60 * 60);
-setcookie('langs_value', $values['favorite-langs'], time() + 30 * 24 * 60 * 60);
-setcookie('date_value', $values['field-date'], time() + 30 * 24 * 60 * 60);
+setcookie('langs_value', $values['field-multiple-language'], time() + 30 * 24 * 60 * 60);
+setcookie('biography_value', $values['biography'], time() + 30 * 24 * 60 * 60);
+setcookie('checkcontract_value', $values['checkcontract'], time() + 30 * 24 * 60 * 60);
 
   // и заполнить переменную $values,
   // предварительно санитизовав.
