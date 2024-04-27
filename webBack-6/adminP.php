@@ -53,14 +53,19 @@
   </tbody>
 </table>
 <div class="stat">
-<?php 
-  foreach ($result as $name => $count) :?>
-  <div class="line">
-    <div class="column <?php print $name?>"></div>
-    <p><?=$name?></p>
-    <div><?=$count?></div>
-  </div>
-<?php endforeach;?>
+<table>
+    <tr>
+        <th>Язык</th>
+        <th>Количество</th>
+    </tr>
+    <?php foreach ($result as $name => $count) :?>
+    <tr>
+        <td><?=$name?></td>
+        <td><?=$count?></td>
+    </tr>
+    <?php endforeach;?>
+</table>
 </div>
+
 </body>
 </html>
