@@ -34,8 +34,8 @@
       <br>
       
         Пол:
-        <label><input name="gender" type="radio" value="Male" <?php if($_COOKIE['gender_value']=="Male") {print "checked";} else print($_COOKIE['gender_value']); ?>/> Мужчина </label>
-        <label><input name="gender" type="radio" value="Female" <?php if($_COOKIE['gender_value']=="Female") {print "checked";}  else print($_COOKIE['gender_value']); ?>/> Женщина </label>
+        <label><input name="gender" type="radio" value="male" <?php if($_COOKIE['gender_value']=="male") {print "checked";} else print($_COOKIE['gender_value']); ?>/> Мужчина </label>
+        <label><input name="gender" type="radio" value="female" <?php if($_COOKIE['gender_value']=="female") {print "checked";}  else print($_COOKIE['gender_value']); ?>/> Женщина </label>
         <br/>
         Выберете ваши любимые языки программирования:
         <br />
