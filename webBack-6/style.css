@@ -52,9 +52,20 @@ body {
     width: 80%;
     margin: auto;
   }
-  td{
-    padding: 0 20px;
-  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid #ddd; 
+    padding: 8px;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
 
   .column{
     width: 20px;
