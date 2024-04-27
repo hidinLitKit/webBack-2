@@ -25,7 +25,7 @@
     <select name="editYear">
       <?php
       for ($i = 1922; $i <= 2022; $i++) {
-        $selected = ($i == $values['year']) ? 'selected' : '';
+        $selected = ($i == $_COOKIE['year_value']) ? 'selected' : '';
         printf('<option value="%d" %s>%d год</option>', $i, $selected, $i);
       }
       ?>
