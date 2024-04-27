@@ -58,7 +58,7 @@
 
       <br/>
       <label for="editCheckContract">Согласие:</label>
-      <input type="checkbox" class="checkbox" id="editCheckContract" <?php if($_COOKIE['checkcontract_value'] == 'on') print "checked" ?> name="editCheckContract"><br>
+      <input type="checkbox" class="checkbox" id="editCheckContract" <?php if($_COOKIE['checkcontract_value'] == 1) print "checked" ?> name="editCheckContract"><br>
 
       <input class="save-button" type="submit" value="Сохранить" name="Edit">
     </form>

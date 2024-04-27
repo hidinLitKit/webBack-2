@@ -40,12 +40,12 @@ if (empty($_SERVER['PHP_AUTH_USER']) ||
 if (isset($_POST))
 { 
   if(isset($_POST["Delete"])){
-    DeleteUser($_POST["Id"]);
+    DeleteUser($_POST["id"]);
     header('Location: ./admin.php');
   } 
   if(isset($_POST["Edit"])){
 
-    setcookie('id', $_POST["Id"], time() + 30 * 24 * 60 * 60);
+    setcookie('id', $_POST["id"], time() + 30 * 24 * 60 * 60);
     setcookie('fio_value', $_POST["fio"], time() + 30 * 24 * 60 * 60);
     setcookie('email_value', $_POST["email"], time() + 30 * 24 * 60 * 60);
     setcookie('year_value', $_POST["year"], time() + 30 * 24 * 60 * 60);
