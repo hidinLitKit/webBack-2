@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Data Table</title>
+  <title>Admin</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h2>User Data Table</h2>
+<h2>Users data</h2>
 
 <table id="userTable">
   <thead>

@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="style.css" rel="stylesheet"/>
-  <title>User Data Table</title>
+  <title>Users</title>
 </head>
 <body>
 <div class="modal">
   <div class="modal-content">
     
-    <h3>Edit User</h3>
+    <h3>User Editing Mode</h3>
     <form action="" method="post">
       <input class="close" name="Close" value="&times;" type="submit"/>
       <label for="editFio">ФИО:</label>
