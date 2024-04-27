@@ -39,7 +39,7 @@
         <br/>
         Выберете ваши любимые языки программирования:
         <br />
-        <select name="favorite-langs[]" multiple="multiple">
+        <select name="field-multiple-language[]" multiple="multiple">
           <option <?php ChooseLanguage($langs, "Pascal") ?> value="Pascal">Pascal</option>
           <option <?php ChooseLanguage($langs, "JavaScript") ?> value="JavaScript">JavaScript</option>
           <option <?php ChooseLanguage($langs, "PHP") ?> value="PHP">PHP</option>
