@@ -181,12 +181,12 @@ else
   // Проверяем ошибки
   $errors = FALSE;
   //Получаем значения
-  $fioval = $_POST['fio'];
-  $emailval = $_POST['email'];
-  $yearval = $_POST['year'];
+  $fioval = htmlspecialchars($_POST['fio'], ENT_QUOTES, 'UTF-8');
+  $emailval = htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8');
+  $yearval = htmlspecialchars($_POST['year'], ENT_QUOTES, 'UTF-8');
   $genderval = $_POST['gender'];
   $checkval = !empty($_POST['checkcontract']);
-  $bioval = $_POST['biography'];
+  $bioval = htmlspecialchars($_POST['biography'], ENT_QUOTES, 'UTF-8');
   $langsval = !empty($_POST['field-multiple-language'])?$_POST['field-multiple-language']:null;
   
   $langsCV = '';
@@ -307,9 +307,10 @@ if (!empty($_COOKIE[session_name()]) &&
     setcookie('login', $login);
     setcookie('pass', $pass);
   try {
-    $stmt = $db->prepare("INSERT INTO application (fio, year, email, gender, biography, checkcontract) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt = $db->prepare("INSERT INTO application (fio, year, email, gender, biography, checkcontract) VALUES (:fio, :year, :email, :gender, :biography, :checkcontract)");
     $checkContractValue = $_POST['checkcontract'] === 'on' ? 1 : 0;
-    $stmt->execute([$_POST['fio'], $_POST['year'], $_POST['email'], $_POST['gender'], $_POST['biography'], $checkContractValue]);
+    $stmt->execute([':fio' => $_POST['fio'], ':year' => $_POST['year'], ':email' => $_POST['email'], ':gender' => $_POST['gender'], ':biography' => $_POST['biography'], ':checkcontract' => $checkContractValue]);
+
 
         // Получение ID последней вставленной записи
         $lastInsertId = $db->lastInsertId();
@@ -325,23 +326,25 @@ if (!empty($_COOKIE[session_name()]) &&
         } */
         if (!empty($_POST['field-multiple-language'])) {
           $languages = $_POST['field-multiple-language'];
+          $stmt = $db->prepare("SELECT id FROM programming_language WHERE name = :name");
+          $insertLanguageStmt = $db->prepare("INSERT INTO programming_language (name) VALUES (:name)");
+          $insertAppLanguageStmt = $db->prepare("INSERT INTO application_language (application_id, language_id) VALUES (:application_id, :language_id)");
+      
           foreach ($languages as $language) {
-              $stmt = $db->prepare("SELECT id FROM programming_language WHERE name = ?");
-              $stmt->execute([$language]);
+              $stmt->execute([':name' => $language]);
               $row = $stmt->fetch(PDO::FETCH_ASSOC);
       
               if (!$row) {
-                  $stmt = $db->prepare("INSERT INTO programming_language (name) VALUES (?)");
-                  $stmt->execute([$language]);
+                  $insertLanguageStmt->execute([':name' => $language]);
                   $languageId = $db->lastInsertId();
               } else {
                   $languageId = $row['id'];
               }
       
-              $stmt = $db->prepare("INSERT INTO application_language (application_id, language_id) VALUES (?, ?)");
-              $stmt->execute([$lastInsertId, $languageId]);
+              $insertAppLanguageStmt->execute([':application_id' => $lastInsertId, ':language_id' => $languageId]);
           }
       }
+      В
       $stmt = $db->prepare("INSERT INTO Users (FormId, Login, Password) VALUES (:formId, :login, :pass)");
         $stmt -> execute(['formId'=>$FormId, 'login'=>$login,'pass'=>$shapass]);
       print('Данные успешно сохранены!');

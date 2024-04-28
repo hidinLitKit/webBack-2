@@ -1,3 +1,6 @@
+<meta
+  http-equiv="Content-Security-Policy"
+  content="default-src 'self'; img-src https://*; child-src 'none';" />
 <link rel="stylesheet" href="style.css">
 <form action="index.php" method="POST">
   <label>
