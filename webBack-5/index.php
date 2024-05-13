@@ -344,7 +344,6 @@ if (!empty($_COOKIE[session_name()]) &&
               $insertAppLanguageStmt->execute([':application_id' => $lastInsertId, ':language_id' => $languageId]);
           }
       }
-      В
       $stmt = $db->prepare("INSERT INTO Users (FormId, Login, Password) VALUES (:formId, :login, :pass)");
         $stmt -> execute(['formId'=>$FormId, 'login'=>$login,'pass'=>$shapass]);
       print('Данные успешно сохранены!');
